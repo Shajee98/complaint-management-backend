@@ -16,8 +16,24 @@ export const getAllDepartments: RequestHandler = async (req, res, next) => {
     }
   };
 
+// export const getAllStaffs: RequestHandler = async (req, res, next) => {
+//     try {
+//         console.log("hellooooooooooo ===> ", req.params.id)
+//         const { id } = req.params
+//         const staffs = await departmentService.getAllStaffs(Number(id))
+//         if (!staffs) {
+//           return serverErrorResponse(res, responses.ORDER_CREATED);
+//         }
+    
+//         return successResponse(res, {staffs: staffs});
+//       } catch (error) {
+//         next(error)
+//       }
+// }
+
   const departmentController = {
-    getAllDepartments
+    getAllDepartments,
+    // getAllStaffs
 }
 
 export default departmentController

@@ -5,7 +5,8 @@ import express from "express"
 // const categoryRoutes = require("../api/v1/public/Category/routes/Category")
 // const shippingAddressRoutes = require("../api/v1/public/ShippingAddress/routes/ShippingAddress")
 // const ethRoutes = require("../api/v1/public/Ethereum/routes/Ethereum")
-import adminSessionRoutes from '../api/v1/public/Admin/routes/Session'
+import userSessionRoutes from '../api/v1/public/User/routes/Session'
+import userAuthRouter from "../api/v1/public/User/routes/Auth"
 import adminAuthRouter from "../api/v1/public/Admin/routes/Auth"
 // const paymentMethodTypesRoutes = require("../api/v1/public/PaymentMethodType/routes/PaymentMethodType")
 // const orderWebhookRoutes = require("../api/v1/public/webhooks/routes/Order")
@@ -14,12 +15,16 @@ import adminAuthRouter from "../api/v1/public/Admin/routes/Auth"
 // const orderPublicRouter = require("../api/v1/public/Order/routes/Order")
 import departmentRoutes from "../api/v1/private/Departments/routes/Departments"
 import complaintRouter from "../api/v1/private/Complaints/routes/Complaints"
+import userRouter from "../api/v1/private/User/routes/User"
+
 
 const publicRouter = express.Router()
-publicRouter.use('/v1/session', adminSessionRoutes)
-publicRouter.use('/v1/auth', adminAuthRouter)
+publicRouter.use('/v1/session', userSessionRoutes)
+publicRouter.use('/v1/admin/auth', adminAuthRouter)
+publicRouter.use('/v1/user/auth', adminAuthRouter)
 publicRouter.use("/v1/departments/", departmentRoutes)
-publicRouter.use('/v1/complaints', complaintRouter)
+// publicRouter.use('/v1/complaints', complaintRouter)
+publicRouter.use('/v1/users/', userRouter)
 // router.use("/v1/customer", customerRoutes)
 // router.use("/v1/customer/session", customerSessionRoutes)
 // router.use("/v1/product", productRoutes)

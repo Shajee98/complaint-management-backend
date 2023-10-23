@@ -1,9 +1,22 @@
 import passport from "passport"
 import {ExtractJwt, Strategy, VerifiedCallback, StrategyOptions} from "passport-jwt"
 import userService from "../services/User/User"
+import { Request } from "express"
+
+const cookieExtractor = (req: Request) => {
+  let jwt = null 
+
+  if (req && req.signedCookies) {
+      jwt = req.signedCookies['token']
+  }
+
+  console.log("jwt =======> ", jwt)
+
+  return jwt
+}
 
 const options: StrategyOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: cookieExtractor,
   secretOrKey: 'jdhdhd-kjfjdhrhrerj-uurhr-jjge'
 } 
 

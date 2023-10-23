@@ -24,7 +24,7 @@ var app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser(process.env.COOKIE_SECRET))
-app.use(express.static(path.join(__dirname, "public")))
+app.use('/uploads', (express.static(path.join(__dirname, "uploads"))))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(passport.initialize())
 
@@ -48,11 +48,6 @@ app.use(cors(corsOptions))
 app.use('/api', publicRoutes)
 app.use("/api", verifyUser, privateRoutes)
 app.use(handleErrors)
-
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404))
-})
 
 // error handler
 

@@ -6,12 +6,10 @@ import { NextFunction, Request, Response } from "express"
 
 export const logout = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { signedCookies = {} } = req
-      const { refreshToken } = signedCookies
-      console.log("refreshToken => " + refreshToken)
+      const { token } = req.signedCookies
+      console.log("refreshToken => " + token)
   
-      res.clearCookie("refreshToken", COOKIE_OPTIONS)
-      badRequestResponse(res, responses.INVALID_COOKIE)
+      res.clearCookie("token", COOKIE_OPTIONS)
       return
     } catch (error) {
       next(error)

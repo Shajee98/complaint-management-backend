@@ -24,7 +24,7 @@ export const getRefreshToken = (user: any) => {
 
 export const COOKIE_OPTIONS: CookieOptions = {
   httpOnly: true,
-  secure: false,
+  secure: true,
   signed: true,
   maxAge: eval(process.env.COOKIE_EXPIRY as string),
   sameSite: "lax"
@@ -45,15 +45,18 @@ export const verifyUser = (req: Request, res: Response, next: NextFunction) => {
     {
       session: false
     },
-    (err: any, user?: Express.User | false | null, info?: object | string | Array<string | undefined>) => {
+    (err: any, user?: Express.User | false | null, info?: object | string | Array<string | undefined> | any) => {
       if (err) {
         // if (err == "token expired")
         // {
         //   res.redirect('/login')
         // }
-        return unauthorizedResponse(res, err)
+        unauthorizedResponse(res, err)
+        return
       } else if (!user) {
-        return unauthorizedResponse(res, info)
+        console.log("Hellloooooooo")
+        unauthorizedResponse(res, info.message)
+        return
       } else {
         req.user = user
         console.log("User found!")

@@ -60,7 +60,19 @@ const Complaint = sequelize.define(
         model: "complaint_statuses",
         key: "id"
       }
-    }
+    },
+    createdAt: {
+      field: "created_at",
+      allowNull: false,
+      defaultValue: new Date(),
+      type: DataTypes.DATE
+    },
+  updatedAt: {
+      field: "updated_at",
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: new Date(),
+    },
   },
   {
     underscored: true,
@@ -69,6 +81,6 @@ const Complaint = sequelize.define(
   }
 )
 
-Complaint.sync({alter: true})
+// Complaint.sync({alter: true})
 
 export default Complaint

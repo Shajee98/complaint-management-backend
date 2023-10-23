@@ -18,8 +18,23 @@ export const getAllDepartments = async () => {
     }
   };
 
+export const getAllStaffs = async (department_id: number) => {
+    try {
+        const staffs = await User.findAll(
+            {
+                where: {department_id: department_id}
+            }
+        );
+        
+        return staffs;
+      } catch (error) {
+        console.error(error);
+      }
+}
+
 const departmentService = {
     getAllDepartments,
+    getAllStaffs
 }
 
 export default departmentService

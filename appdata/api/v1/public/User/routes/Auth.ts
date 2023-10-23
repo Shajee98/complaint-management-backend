@@ -10,4 +10,4 @@ userRouter.post(
   userController.resetPassword
 )
 
-module.exports = userRouter
+export default userRouter

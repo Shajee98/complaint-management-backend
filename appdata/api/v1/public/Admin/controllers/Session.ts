@@ -11,7 +11,7 @@ const login: RequestHandler = async (req, res, next) => {
     
     const user = await getUserById(req.user?.id)
     // Remove users password from memory
-    // req.user!.password = undefined
+    req.user!.password = undefined
     console.log("req.user after logging in => ", req.user)
     const jwtToken = getJwt({
       id: req.user!.id,
@@ -19,18 +19,12 @@ const login: RequestHandler = async (req, res, next) => {
       user_type: req.user!.user_role_id
     })
 
-    const refreshToken = getRefreshToken({
-      id: req.user!.id,
-      user_name: req.user?.user_name
-    })
-
-
     const responseData = {
       jwtToken: jwtToken,
       user: { ...user }
     }
 
-    res.cookie("token", `Bearer ${refreshToken}`, COOKIE_OPTIONS)
+    res.cookie("token", `${jwtToken}`, COOKIE_OPTIONS)
     return successResponse(res, responseData)
   } catch (error) {
     next(error)

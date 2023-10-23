@@ -10,9 +10,9 @@ const Attachment = sequelize.define(
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    file: {
+    fileName: {
       allowNull: false,
-      type: DataTypes.BLOB
+      type: DataTypes.STRING
     },
     complaintId: {
         field: "complaint_id",
@@ -43,6 +43,6 @@ const Attachment = sequelize.define(
   }
 )
 
-// Attachment.sync({alter: true})
+Attachment.sync({alter: true})
 
 export default Attachment

@@ -1,12 +1,22 @@
 import { Router } from 'express';
 import userController from "../controllers/User"
 
-const complaintRouter = Router();
+const userRouter = Router();
 
 
-complaintRouter.get(
-  "/get/all",
+userRouter.get(
+  "/department/get/all/:id",
   userController.getUsersByDepartment
 )
 
-export default complaintRouter
+userRouter.get(
+  "/types/get/all",
+  userController.getUserTypes
+)
+
+userRouter.get(
+  "/statuses/get/all",
+  userController.getAllComplaintStatus
+)
+
+export default userRouter

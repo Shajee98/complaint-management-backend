@@ -34,6 +34,6 @@ const Department = sequelize.define(
   }
 )
 
-Department.sync({alter: true})
+// Department.sync({alter: true})
 
 export default Department

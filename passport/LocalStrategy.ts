@@ -14,9 +14,9 @@ const options: IStrategyOptionsWithRequest = {
 }
 
 // This function contains passport conditions that validates a user
-const authenticateUser: VerifyFunctionWithRequest = async (req: Request, user_name: string, password: string, done: VerifiedCallback) => {
+const authenticateUser: VerifyFunctionWithRequest = async (req: Request, username: string, password: string, done: VerifiedCallback) => {
   try {
-      const user = await userService.getUserByUserName(user_name)  
+      const user = await userService.getUserByUserName(username)  
       if (user) {
         console.log("user =====> ", user)
 

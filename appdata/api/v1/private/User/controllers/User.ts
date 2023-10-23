@@ -5,21 +5,50 @@ import { serverErrorResponse, successResponse } from "../../../../../../services
 
 export const getUsersByDepartment: RequestHandler = async (req, res, next) => {
     try {
-      const { department_id } = req.body
-      const id = req.user?.id
-      const complaints = await userService.getUsersByDepartment(Number(department_id))
-      if (!complaints) {
+      const { id } = req.params
+    //   const id = req.user?.id
+      const users = await userService.getUsersByDepartment(Number(id))
+      if (!users) {
         return serverErrorResponse(res, responses.ORDER_CREATED);
       }
   
-      return successResponse(res, {complaints});
+      return successResponse(res, {staffs: users});
+    } catch (error) {
+      next(error)
+    }
+  };
+
+export const getUserTypes: RequestHandler = async (req, res, next) => {
+    try {
+    //   const id = req.user?.id
+      const userTypes = await userService.getUserTypes()
+      if (!userTypes) {
+        return serverErrorResponse(res, responses.ORDER_CREATED);
+      }
+  
+      return successResponse(res, {userTypes: userTypes});
+    } catch (error) {
+      next(error)
+    }
+  };
+
+export const getAllComplaintStatus: RequestHandler = async (req, res, next) => {
+    try {
+      const statuses = await userService.getAllComplaintStatus()
+      if (!statuses) {
+        return serverErrorResponse(res, responses.ORDER_CREATED);
+      }
+  
+      return successResponse(res, {statuses: statuses});
     } catch (error) {
       next(error)
     }
   };
 
   const userController = {
-    getUsersByDepartment
+    getAllComplaintStatus,
+    getUsersByDepartment,
+    getUserTypes
 }
 
 export default userController
