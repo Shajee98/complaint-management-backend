@@ -26,9 +26,9 @@ Complaint.belongsTo(ComplaintStatus, { foreignKey: 'complaint_status_id', as: 'c
 
 // ComplaintStatus.hasMany(Complaint, { foreignKey: 'complaint_status_id' });
 
-Complaint.hasOne(ComplaintType, { foreignKey: 'complaint_type_id' });
+Complaint.belongsTo(ComplaintType, { foreignKey: 'complaint_type_id', as: "complaint_type" });
 
-ComplaintType.hasMany(Complaint, { foreignKey: 'complaint_type_id' });
+// ComplaintType.hasMany(Complaint, { foreignKey: 'complaint_type_id' });
 
 Comment.belongsTo(Complaint, {foreignKey: "complaint_id"})
 

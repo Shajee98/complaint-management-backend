@@ -11,6 +11,7 @@ import { NextFunction, Request, Response } from "express";
 const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { first_name, last_name, password, user_name, user_type_id, department_id } = req.body;
+    console.log("department_id ==> ", department_id)
     const createdUser = await authService.register({
       first_name: first_name,
       last_name: last_name,

@@ -15,6 +15,11 @@ userRouter.get(
 )
 
 userRouter.get(
+  "/complaint-types/get/all",
+  userController.getComplaintTypes
+)
+
+userRouter.get(
   "/statuses/get/all",
   userController.getAllComplaintStatus
 )

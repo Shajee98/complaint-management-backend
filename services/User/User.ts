@@ -1,4 +1,5 @@
 import ComplaintStatus from "../../models/ComplaintStatus"
+import ComplaintType from "../../models/ComplaintType"
 import Department from "../../models/Department"
 import User from "../../models/User"
 import UserType from "../../models/UserType"
@@ -124,6 +125,15 @@ export const getAllComplaintStatus = async () => {
   }
 };
 
+export const getComplaintTypes = async () => {
+  try {
+    const complaintType = await ComplaintType.findAll()
+    return complaintType
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const updatePassword = async (newPassword: string, userId: number) => {
   try {
     const user = await User.update(
@@ -151,5 +161,6 @@ export default {
   updatePassword,
   getUsersByDepartment,
   getAllComplaintStatus,
-  getUserTypes
+  getUserTypes,
+  getComplaintTypes
 }

@@ -45,10 +45,24 @@ export const getAllComplaintStatus: RequestHandler = async (req, res, next) => {
     }
   };
 
+  export const getComplaintTypes: RequestHandler = async (req, res, next) => {
+    try {
+       const complaintType = await userService.getComplaintTypes()
+       if (!complaintType) {
+         return serverErrorResponse(res, responses.ORDER_NOT_FOUND);
+       }
+   
+       return successResponse(res, {complaintType});
+     } catch (error) {
+       next(error)
+    }
+   };
+
   const userController = {
     getAllComplaintStatus,
     getUsersByDepartment,
-    getUserTypes
+    getUserTypes,
+    getComplaintTypes
 }
 
 export default userController

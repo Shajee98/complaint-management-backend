@@ -7,9 +7,9 @@ import Attachment from "../../../../../../models/Attahcment";
 export const createComplaint: RequestHandler = async (req, res, next) => {
   try {
     console.log("req...", req.body);
-    const { customer_number, complaint_number, description, staff_id, department_id, complaint_status_id } = req.body
+    const { customer_number, complaint_number, description, staff_id, department_id, complaint_status_id, complaint_type_id } = req.body
     console.log("customer_number ", customer_number, "complaint_number ", complaint_number, "description ", description, staff_id, "department_id ", department_id, "complaint_status_id", complaint_status_id)
-    const complaint = await complaintService.createComplaint({customer_number, complaint_number, description, staff_id, department_id, complaint_status_id})
+    const complaint = await complaintService.createComplaint({customer_number, complaint_number, description, staff_id, department_id, complaint_status_id, complaint_type_id})
     if (!complaint) {
       return serverErrorResponse(res, responses.ORDER_NOT_CREATED);
     }
@@ -36,8 +36,8 @@ export const updateComplaint: RequestHandler = async (req, res, next) => {
   try {
     const { id } = req.params
     const complaint = await complaintService.updateComplaint(Number(id), {...req.body})
-    if (!complaint) {
-      return serverErrorResponse(res, responses.ORDER_CREATED);
+    if (!complaint || complaint[0] == 0) {
+      return serverErrorResponse(res, responses.NOT_UPDATED);
     }
 
     return successResponse(res, {complaint});
@@ -48,9 +48,9 @@ export const updateComplaint: RequestHandler = async (req, res, next) => {
 
 export const getAllComplaints: RequestHandler = async (req, res, next) => {
   try {
-    const { department_id, complaint_type_id } = req.query
+    const { department_id, complaint_type_id, complaint_status_id } = req.query
     const user = req.user
-    const complaints = await complaintService.getAllComplaints(Number(department_id), Number(complaint_type_id), user)
+    const complaints = await complaintService.getAllComplaints(Number(department_id), Number(complaint_type_id), Number(complaint_status_id), user)
     if (!complaints) {
       return serverErrorResponse(res, responses.ORDER_CREATED);
     }

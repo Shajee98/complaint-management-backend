@@ -11,7 +11,7 @@ complaintRouter.post(
   complaintsController.createComplaint
 )
 
-complaintRouter.put(
+complaintRouter.post(
   "/update-complaint/:id",
   complaintsController.updateComplaint
 )

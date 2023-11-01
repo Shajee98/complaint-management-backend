@@ -21,7 +21,7 @@ import userRouter from "../api/v1/private/User/routes/User"
 const publicRouter = express.Router()
 publicRouter.use('/v1/session', userSessionRoutes)
 publicRouter.use('/v1/admin/auth', adminAuthRouter)
-publicRouter.use('/v1/user/auth', adminAuthRouter)
+publicRouter.use('/v1/user/auth', userAuthRouter)
 publicRouter.use("/v1/departments/", departmentRoutes)
 // publicRouter.use('/v1/complaints', complaintRouter)
 publicRouter.use('/v1/users/', userRouter)
