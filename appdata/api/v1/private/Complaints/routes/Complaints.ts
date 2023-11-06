@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import complaintsController from "../controllers/Complaints"
-import { upload } from '../../../../../../utils/upload';
+import { attachmentUpload } from '../../../../../../utils/upload';
 
 const complaintRouter = Router();
 
 
 complaintRouter.post(
   "/create",
-  upload.array('attachments'),
+  attachmentUpload.array('attachments'),
   complaintsController.createComplaint
 )
 

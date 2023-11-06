@@ -1,12 +1,23 @@
 import multer from 'multer'
 
-const storage = multer.diskStorage({
+const attachmentsStorage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads'); // Set your desired folder path
+      cb(null, 'uploads/attachments'); // Set your desired folder path
     },
     filename: function (req, file, cb) {
       cb(null, file.originalname);
     },
   });
  
-export const upload = multer({ storage: storage });
+export const attachmentUpload = multer({ storage: attachmentsStorage });
+
+const csvStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/csvs'); // Set your desired folder path
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
+    },
+  });
+ 
+export const csvUpload = multer({ storage: csvStorage });
