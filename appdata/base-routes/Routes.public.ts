@@ -16,6 +16,7 @@ import adminAuthRouter from "../api/v1/public/Admin/routes/Auth"
 import departmentRoutes from "../api/v1/private/Departments/routes/Departments"
 import complaintRouter from "../api/v1/private/Complaints/routes/Complaints"
 import userRouter from "../api/v1/private/User/routes/User"
+import whatsappRouter from "../api/v1/public/Complaint/routes/Whatsapp"
 
 
 const publicRouter = express.Router()
@@ -25,6 +26,7 @@ publicRouter.use('/v1/user/auth', userAuthRouter)
 publicRouter.use("/v1/departments/", departmentRoutes)
 // publicRouter.use('/v1/complaints', complaintRouter)
 publicRouter.use('/v1/users/', userRouter)
+publicRouter.use('/v1/whatsapp/', whatsappRouter)
 // router.use("/v1/customer", customerRoutes)
 // router.use("/v1/customer/session", customerSessionRoutes)
 // router.use("/v1/product", productRoutes)

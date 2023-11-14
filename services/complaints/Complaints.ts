@@ -11,6 +11,8 @@ import UserRoleType from "../../models/UserType";
 import fs from 'fs'
 import path from "path";
 import ComplaintType from "../../models/ComplaintType";
+import WhatsappResponse from "../../models/WhatsappResponse";
+import WhatsappMessage from "../../models/WhatsappMessage";
 
 
 export const createComplaint = async (complaintDetails: any) => {
@@ -265,6 +267,75 @@ export const addCommentToComplaint = async (complaint_id: number, user_id: numbe
   }
 };
 
+export const YesOrNo = async (whatsapp_response: number, customerNumber: string) => {
+  try {
+      let response
+      switch (whatsapp_response) {
+        case 1:
+          response = "Yes"
+          break;
+        case 2:
+          response = "No"
+          break;  
+        default:
+          break;
+      }
+      const saved_response = await WhatsappResponse.create({
+        response,
+        customerNumber
+      });
+
+    return saved_response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+const YesOrNoCount = async () => {
+  try {
+    const responses = await WhatsappResponse.findAll({
+      attributes: [
+        [
+          sequelize.literal(`SUM(CASE WHEN response = 'Yes' THEN 1 ELSE 0 END)`),
+          'positive'
+        ],
+        [
+          sequelize.literal(`SUM(CASE WHEN response = 'No' THEN 1 ELSE 0 END)`),
+          'negetive'
+        ],
+      ]
+    });
+
+    return {responses};
+  } catch (error) {
+    throw error;
+  }
+}
+
+const SetWhatsappMessageFormat = async (message: string) => {
+  try {
+    const format = await WhatsappMessage.update({message: message}, {
+      where: {
+        id: 1
+      }
+    });
+
+  return format;
+} catch (error) {
+  throw error;
+}
+}
+
+const WhatsappMessageFormat = async () => {
+  try {
+    const format = await WhatsappMessage.findAll();
+
+  return format;
+} catch (error) {
+  throw error;
+}
+}
+
 const complaintService = {
     createComplaint,
     updateComplaint,
@@ -274,7 +345,11 @@ const complaintService = {
     addCommentToComplaint,
     getAllComplaintStatus,
     getComplaintsByMonths,
-    getAllSearchByKeyword
+    getAllSearchByKeyword,
+    YesOrNo,
+    YesOrNoCount,
+    WhatsappMessageFormat,
+    SetWhatsappMessageFormat
 }
 
 export default complaintService
