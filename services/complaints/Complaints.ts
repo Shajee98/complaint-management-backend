@@ -162,31 +162,11 @@ const getComplaintsByMonths = async (userId: number, status_id: number) => {
   try {
     console.log('Getting Complaints By Month')
     const complaints = await Complaint.findAll({
-      where: {
-        user_id: userId,
-        // complaint_status_id: status_id
-      },
-      include: [{
-        model: ComplaintStatus,
-        as: 'complaint_status'
-      }],
       attributes: [
         [sequelize.fn('DATE', sequelize.col('created_at')), 'created_at'],
         [
-          sequelize.literal(`SUM(CASE WHEN complaint_status_id = 1 THEN 1 ELSE 0 END)`),
-          'open'
-        ],
-        [
-          sequelize.literal(`SUM(CASE WHEN complaint_status_id = 2 THEN 1 ELSE 0 END)`),
-          'resolved'
-        ],
-        [
-          sequelize.literal(`SUM(CASE WHEN complaint_status_id = 3 THEN 1 ELSE 0 END)`),
-          'in_progress'
-        ],
-        [
-          sequelize.literal(`SUM(CASE WHEN complaint_status_id = 4 THEN 1 ELSE 0 END)`),
-          'cancelled'
+          sequelize.literal(`SUM(CASE WHEN complaint_status_id = ${status_id} THEN 1 ELSE 0 END)`),
+          'statusCount'
         ],
         // Add more dynamic columns for other order types if needed
         [
@@ -194,20 +174,14 @@ const getComplaintsByMonths = async (userId: number, status_id: number) => {
           'count'
         ],
       ],
-      // attributes: [
-      //   [sequelize.fn("MONTH", sequelize.col("created_at")), "month"],
-      //   [sequelize.fn("COUNT", sequelize.col("id")), "count"],
-      // ],
-      // attributes: [
-        // [sequelize.fn('DATE', sequelize.col('created_at')), 'created_at'],
-        // [
-        //   sequelize.literal("(SELECT COUNT(*) FROM complaints WHERE complaints.complaint_status_id = complaint_status.id)"), 'complaintCount'
-        // ]
-      // ],
-      order: [[sequelize.fn('DATE', sequelize.col('created_at')), 'ASC']],
+      // order: [[sequelize.fn('DATE', sequelize.col('created_at')), 'DESC']],
+      //order: [[sequelize.fn('DATE', sequelize.col('created_at')), 'ASC']],
+
       group: [sequelize.fn('DATE', sequelize.col('created_at'))],
       raw: true
     })
+    
+    console.log(complaints);
     return {
       complaints: complaints,
     }
@@ -215,6 +189,64 @@ const getComplaintsByMonths = async (userId: number, status_id: number) => {
     console.error(error);
   }
 }
+
+// const getComplaintsByMonths = async (userId: number, status_id: number) => {
+//   try {
+//     console.log('Getting Complaints By Month')
+//     const complaints = await Complaint.findAll({
+//       where: {
+//         user_id: userId,
+//         complaint_status_id: status_id
+//       },
+//       include: [{
+//         model: ComplaintStatus,
+//         as: 'complaint_status'
+//       }],
+//       attributes: [
+//         [sequelize.fn('DATE', sequelize.col('complaint.created_at')), 'abc'],
+//         // [
+//         //   sequelize.literal(`SUM(CASE WHEN complaint_status_id = 1 THEN 1 ELSE 0 END)`),
+//         //   'open'
+//         // ],
+//         // [
+//         //   sequelize.literal(`SUM(CASE WHEN complaint_status_id = 2 THEN 1 ELSE 0 END)`),
+//         //   'resolved'
+//         // ],
+//         // [
+//         //   sequelize.literal(`SUM(CASE WHEN complaint_status_id = 3 THEN 1 ELSE 0 END)`),
+//         //   'in_progress'
+//         // ],
+//         // [
+//         //   sequelize.literal(`SUM(CASE WHEN complaint_status_id = 4 THEN 1 ELSE 0 END)`),
+//         //   'cancelled'
+//         // ],
+//         // Add more dynamic columns for other order types if needed
+//         [
+//           sequelize.fn('count', sequelize.col('complaint.complaint_status_id')),
+//           'count'
+//         ],
+//       ],
+//       // attributes: [
+//       //   [sequelize.fn("MONTH", sequelize.col("created_at")), "month"],
+//       //   [sequelize.fn("COUNT", sequelize.col("id")), "count"],
+//       // ],
+//       // attributes: [
+//         // [sequelize.fn('DATE', sequelize.col('created_at')), 'created_at'],
+//         // [
+//         //   sequelize.literal("(SELECT COUNT(*) FROM complaints WHERE complaints.complaint_status_id = complaint_status.id)"), 'complaintCount'
+//         // ]
+//       // ],
+//       order: [[sequelize.fn('DATE', sequelize.col('complaint.created_at')), 'ASC']],
+//       group: [sequelize.fn('DATE', sequelize.col('complaint.created_at'))],
+//       raw: true
+//     })
+//     return {
+//       complaints: complaints,
+//     }
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 
 export const getComments = async (complaint_id: number) => {
   try {
