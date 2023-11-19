@@ -10,11 +10,6 @@ const Complaint = sequelize.define(
       primaryKey: true,
       type: DataTypes.INTEGER
     },
-    complaintNumber: {
-      field: "complaint_number",
-      allowNull: false,
-      type: DataTypes.STRING
-    },
     complaintTypeId: {
       field: "complaint_type_id",
       allowNull: false,
@@ -35,7 +30,7 @@ const Complaint = sequelize.define(
     },
     departmentId: {
         field: "department_id",
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.INTEGER,
         references: {
           model: "departments",
@@ -45,7 +40,7 @@ const Complaint = sequelize.define(
     userId: {
       field: "user_id",
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: "users",
         key: "id"
@@ -81,6 +76,6 @@ const Complaint = sequelize.define(
   }
 )
 
-// Complaint.sync({alter: true})
+Complaint.sync({alter: true})
 
 export default Complaint

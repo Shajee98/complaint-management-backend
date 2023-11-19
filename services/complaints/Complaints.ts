@@ -18,13 +18,12 @@ import WhatsappMessage from "../../models/WhatsappMessage";
 export const createComplaint = async (complaintDetails: any) => {
   try {
     let complaint: any
-    const { customer_number, complaint_number, description, staff_id, department_id, complaint_status_id, complaint_type_id } = complaintDetails
+    const { customer_number, description, staff_id, department_id, complaint_status_id, complaint_type_id } = complaintDetails
         complaint = await Complaint.create({
           customerNumber: customer_number,
-          complaintNumber: complaint_number,
           description,
-          departmentId: department_id,
-          userId: staff_id,
+          departmentId: department_id == "" ? null : department_id,
+          userId: staff_id == "" ? null : staff_id,
           complaintStatusId: complaint_status_id,
           complaintTypeId: complaint_type_id
         })
@@ -37,12 +36,21 @@ export const createComplaint = async (complaintDetails: any) => {
 
 export const updateComplaint = async (id: number, complaintDetails: any) => {
   try {
+    console.log("complaintDetails ===? ", complaintDetails)
     const complaintUpdated = await Complaint.update(
-      { ...complaintDetails },
+      {
+        customerNumber: complaintDetails.customer_number,
+        description: complaintDetails.description,
+        departmentId: complaintDetails.department_id == "" ? null : complaintDetails.department_id,
+        userId: complaintDetails.staff_id == "" ? null : complaintDetails.staff_id,
+        complaintStatusId: complaintDetails.complaint_status_id,
+        complaintTypeId: complaintDetails.complaint_type_id
+      },
       {
         where: {
           id: id,
-        }
+        },
+        returning: true
       }
     );
 
@@ -52,7 +60,7 @@ export const updateComplaint = async (id: number, complaintDetails: any) => {
   }
 };
 
-export const getAllComplaints = async (department_id: number, complaint_type_id: number, complaint_status_id: number, user?: any,) => {
+export const getAllComplaints = async (department_id: number | null, complaint_type_id: number, complaint_status_id: number, user?: any) => {
   try {
     let complaints
     const user_role_id = user?.user_type_id
@@ -74,15 +82,42 @@ export const getAllComplaints = async (department_id: number, complaint_type_id:
         break;
       case 2:
         console.log("Helllooooooooo // 2")
-        complaints = await Complaint.findAndCountAll({
-          where: {
-            departmentId: department_id,
-            complaintTypeId: complaint_type_id,
-            complaintStatusId: complaint_status_id
-          },
-          include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
-          order: [["id", "desc"]],
-        })
+        console.log("department_id ===>", typeof department_id)
+        if (department_id == 4)
+        {
+          complaints = await Complaint.findAndCountAll({
+            where: {
+              complaintTypeId: complaint_type_id,
+              complaintStatusId: complaint_status_id
+            },
+            include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+            order: [["id", "desc"]],
+          })          
+        }
+        else if (department_id == 0)
+        {
+          complaints = await Complaint.findAndCountAll({
+            where: {
+              departmentId: null,
+              complaintTypeId: complaint_type_id,
+              complaintStatusId: complaint_status_id
+            },
+            include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+            order: [["id", "desc"]],
+          })   
+        }
+        else 
+        {
+          complaints = await Complaint.findAndCountAll({
+            where: {
+              departmentId: department_id,
+              complaintTypeId: complaint_type_id,
+              complaintStatusId: complaint_status_id
+            },
+            include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+            order: [["id", "desc"]],
+          })
+        }
         break;
       case 1:
         console.log("Helllooooooooo // 1")

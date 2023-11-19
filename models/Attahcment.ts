@@ -43,6 +43,6 @@ const Attachment = sequelize.define(
   }
 )
 
-Attachment.sync({alter: true})
+// Attachment.sync({alter: true})
 
 export default Attachment
