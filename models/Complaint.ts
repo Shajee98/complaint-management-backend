@@ -56,6 +56,11 @@ const Complaint = sequelize.define(
         key: "id"
       }
     },
+    fromWhatsapp: {
+      field: "from_whatsapp",
+      allowNull: false,
+      type: DataTypes.BOOLEAN
+    },
     createdAt: {
       field: "created_at",
       allowNull: false,

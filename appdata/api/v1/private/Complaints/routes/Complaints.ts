@@ -13,6 +13,7 @@ complaintRouter.post(
 
 complaintRouter.post(
   "/update-complaint/:id",
+  attachmentUpload.array('attachments'),
   complaintsController.updateComplaint
 )
 

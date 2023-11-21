@@ -3,6 +3,8 @@ import responses from "../../../../../../constants/Responses"
 import { RequestHandler } from "express";
 import { serverErrorResponse, successResponse } from "../../../../../../services/Response/Response";
 import Attachment from "../../../../../../models/Attahcment";
+import fs from 'fs'
+import path from "path";
 
 export const createComplaint: RequestHandler = async (req, res, next) => {
   try {
@@ -39,8 +41,63 @@ export const updateComplaint: RequestHandler = async (req, res, next) => {
     if (!complaint || complaint[0] == 0) {
       return serverErrorResponse(res, responses.NOT_UPDATED);
     }
+      // const oldAttachments = await Attachment.findAll({
+      //   where: {
+      //     complaint_id: complaint[1][0].dataValues.id
+      //   }
+      // })
+          // await Promise.all(oldAttachments.map(async (attachment) => {
+          //   await Attachment.destroy({
+          //     where: {
+          //       id: attachment.dataValues.id
+          //     }
+          //   })
+            // fs.unlink('/path/to/file.txt', (err) => {
+            //   if (err) {
+            //     console.error(err);
+            //     return;
+            //   }
+            //   console.log('File deleted successfully');
+            // });
+          // }))
 
-    return successResponse(res, {complaint});
+      // if (oldAttachments.length > files.length)
+      // {
+      //   for (let i = 0; i < files.length; i++) {
+      //     let removeAttachments = oldAttachments.filter((attachment) => attachment.dataValues.file_name != files[i].originalname)
+      //     await Promise.all(removeAttachments.map(async (attachment) => {
+      //       await Attachment.destroy({
+      //         where: {
+      //           id: attachment.dataValues.id
+      //         }
+      //       })
+      //     }))
+      //   }
+      // }
+      // else if (files.length > oldAttachments.length)
+      // {
+      //   for (let i = 0; i < oldAttachments.length; i++) {
+      //     let addAttachments = files.filter((file : any) => file.originalname != oldAttachments[i].dataValues.file_name)
+      //     await Promise.all(addAttachments.map(async (attachment: any) => {
+      //       await Attachment.create({
+      //         fileName: attachment.originalname,
+      //         complaintId: complaint[1][0].dataValues.id
+      //       })
+      //     }))
+      //   }
+      // }
+      if (req.files)
+      {
+        let files: any = req.files
+        await Promise.all(files.map(async (file: any) => {
+          console.log("file ====> ", file)
+          await Attachment.create({
+            fileName: file.originalname,
+            complaintId: complaint[1][0].dataValues.id
+          })
+        }));
+      }
+      return successResponse(res, {complaint});  
   } catch (error) {
     next(error)
   }
@@ -93,8 +150,53 @@ export const getComplaintById: RequestHandler = async (req, res, next) => {
     if (!complaint) {
       return serverErrorResponse(res, responses.ORDER_NOT_FOUND);
     }
+    // const output = fs.createWriteStream('files.zip');
+    // let matchingFiles: any[] = []
+    // complaint?.dataValues.attachments.map((attachment: any) => {
+    //   fs.readdir("uploads\\attachments\\", async (err, files) => {
+    //     if (err) {
+    //       console.error(err);
+    //       return
+    //     }
+    
+    //     // Get information about each file
+    //     const filePromises = files.map(file => {
+    //       const filePath = path.join("uploads\\attachments\\", attachment.fileName);
+    //       return new Promise((resolve, reject) => {
+    //         fs.stat(filePath, (err, stats) => {
+    //           if (err) {
+    //             console.error(err);
+    //             resolve(null);
+    //           } else {
+    //             resolve({
+    //               name: file,
+    //               type: f,
+    //               size: stats.size,
+    //               // Add more properties as needed
+    //             });
+    //           }
+    //         });
+    //       });
+    //     });
+    //     // const output = fs.createWriteStream('files.zip');
+    //     // const archive = archiver('zip', {
+    //     //   zlib: { level: 9 } // compression level
+    //     // });
+    //     // archive.pipe(output);
+    //     await Promise.all(filePromises).then((fileObjects: any) => {
+    //       // Filter files based on the provided filename
+    //       matchingFiles = fileObjects.filter((fileObj: any) => fileObj?.name.includes(attachment.fileName));
+    //       // matchingFiles.map((file: any) => {
+    //         //     archive.file(file, { name: file });
+    //         //   });
+            
+    //         //   archive.finalize();
+    //       })
+    //     })
+    //   })
+    //   console.log("matchingFiles ====> ", matchingFiles)
+      return successResponse(res, {complaint});
 
-    return successResponse(res, {complaint});
   } catch (error) {
     next(error)
  }

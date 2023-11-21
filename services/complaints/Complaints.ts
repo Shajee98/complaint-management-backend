@@ -8,11 +8,12 @@ import ComplaintStatus from "../../models/ComplaintStatus";
 import Department from "../../models/Department";
 import User from '../../models/User'
 import UserRoleType from "../../models/UserType";
-import fs from 'fs'
-import path from "path";
 import ComplaintType from "../../models/ComplaintType";
 import WhatsappResponse from "../../models/WhatsappResponse";
 import WhatsappMessage from "../../models/WhatsappMessage";
+import archiver from "archiver";
+import fs from 'fs'
+import path from "path";
 
 
 export const createComplaint = async (complaintDetails: any) => {
@@ -25,7 +26,8 @@ export const createComplaint = async (complaintDetails: any) => {
           departmentId: department_id == "" ? null : department_id,
           userId: staff_id == "" ? null : staff_id,
           complaintStatusId: complaint_status_id,
-          complaintTypeId: complaint_type_id
+          complaintTypeId: complaint_type_id,
+          fromWhatsapp: false
         })
 
     return complaint
@@ -44,7 +46,8 @@ export const updateComplaint = async (id: number, complaintDetails: any) => {
         departmentId: complaintDetails.department_id == "" ? null : complaintDetails.department_id,
         userId: complaintDetails.staff_id == "" ? null : complaintDetails.staff_id,
         complaintStatusId: complaintDetails.complaint_status_id,
-        complaintTypeId: complaintDetails.complaint_type_id
+        complaintTypeId: complaintDetails.complaint_type_id,
+        fromWhatsapp: false
       },
       {
         where: {
@@ -156,9 +159,8 @@ export const getAllComplaintStatus = async () => {
 export const getComplaintById = async (id: number) => {
   try {
     console.log({ id });
-    let complaint: any = {}
     // await sequelize.transaction(async (t) => {
-    complaint = await Complaint.findOne({
+    const complaint = await Complaint.findOne({
       include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: Department, as: "department"}, {model: ComplaintStatus, as: "complaint_status"}, {model: Attachment, as: "attachments"}, {model: ComplaintType, as: "complaint_type"}],
       where: {
         id
