@@ -61,6 +61,11 @@ const Complaint = sequelize.define(
       allowNull: false,
       type: DataTypes.BOOLEAN
     },
+    customerName: {
+      field: "customer_name",
+      allowNull: true,
+      type: DataTypes.STRING
+    },
     createdAt: {
       field: "created_at",
       allowNull: false,

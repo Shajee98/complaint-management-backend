@@ -19,7 +19,7 @@ import path from "path";
 export const createComplaint = async (complaintDetails: any) => {
   try {
     let complaint: any
-    const { customer_number, description, staff_id, department_id, complaint_status_id, complaint_type_id, fromWhatsapp } = complaintDetails
+    const { customer_number, description, staff_id, department_id, complaint_status_id, complaint_type_id, fromWhatsapp, customer_name } = complaintDetails
         complaint = await Complaint.create({
           customerNumber: customer_number,
           description,
@@ -27,7 +27,8 @@ export const createComplaint = async (complaintDetails: any) => {
           userId: staff_id == "" ? null : staff_id,
           complaintStatusId: complaint_status_id,
           complaintTypeId: complaint_type_id,
-          fromWhatsapp: fromWhatsapp == "true" ? true : false
+          fromWhatsapp: fromWhatsapp == "true" ? true : false,
+          customerName: customer_name
         })
 
     return complaint
@@ -47,6 +48,7 @@ export const updateComplaint = async (id: number, complaintDetails: any) => {
         userId: complaintDetails.staff_id == "" ? null : complaintDetails.staff_id,
         complaintStatusId: complaintDetails.complaint_status_id,
         complaintTypeId: complaintDetails.complaint_type_id,
+        customerName: complaintDetails.customer_name
       },
       {
         where: {
