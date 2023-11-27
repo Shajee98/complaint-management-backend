@@ -154,6 +154,21 @@ export const updatePassword = async (newPassword: string, userId: number) => {
   }
 }
 
+export const getAllUsers = async () => {
+  try {
+    const statuses = await User.findAll({
+      include: {
+        model: Department,
+        as: 'department'
+      }
+    });
+    
+    return statuses;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export default {
   register,
   getUserByUserName,
@@ -162,5 +177,6 @@ export default {
   getUsersByDepartment,
   getAllComplaintStatus,
   getUserTypes,
-  getComplaintTypes
+  getComplaintTypes,
+  getAllUsers
 }

@@ -3,6 +3,7 @@ import responses from "../../../../../../constants/Responses"
 import { RequestHandler } from "express";
 import { genericResponseByData, serverErrorResponse, successResponse } from "../../../../../../services/Response/Response";
 import Attachment from "../../../../../../models/Attahcment";
+import whatsappService from "../../../../../../services/whatsapp/Whatsapp";
 
 const YesOrNo: RequestHandler = async (req, res, next) => {
     try {
@@ -94,12 +95,29 @@ const WhatsappMessage: RequestHandler = async (req, res, next) => {
       }
 }
 
+const MessageStatus: RequestHandler = async (req, res, next) => {
+  try {
+    const { customer_number, message_status, service_end_date } = req.body
+    const statuses = await whatsappService.whatsappMessageStatus({customer_number, message_status, service_end_date})
+
+    if (!statuses)
+    {
+      return serverErrorResponse(res, responses.USER_REGISTRATION_FAILURE)
+    }
+
+    return res.send(genericResponseByData(statuses, { success: responses.ADMIN_REGISTRATION_SUCCESS }));
+} catch (error) {
+next(error)
+}
+}
+
 const whatsappController = {
     YesOrNo,
     DescResponse,
     YesOrNoCount,
     WhatsappMessage,
-    SetWhatsappMessageFormat
+    SetWhatsappMessageFormat,
+    MessageStatus
 } 
 
 export default whatsappController

@@ -26,4 +26,9 @@ whatsappRouter.post(
   whatsappController.SetWhatsappMessageFormat
 )
 
+whatsappRouter.post(
+  "/message-status",
+  whatsappController.MessageStatus
+)
+
 export default whatsappRouter

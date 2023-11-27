@@ -24,4 +24,9 @@ userRouter.get(
   userController.getAllComplaintStatus
 )
 
+userRouter.get(
+  "/get/all",
+  userController.getAllUsers
+)
+
 export default userRouter

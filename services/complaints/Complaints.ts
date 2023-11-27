@@ -1,6 +1,5 @@
-import { Op, Sequelize } from "sequelize";
+import { Op } from "sequelize";
 import sequelize from "../../config/db.config"
-import responses from "../../constants/Responses"
 import Attachment from "../../models/Attahcment";
 import Comment from "../../models/Comments";
 import Complaint from "../../models/Complaint"
@@ -19,7 +18,7 @@ import path from "path";
 export const createComplaint = async (complaintDetails: any) => {
   try {
     let complaint: any
-    const { customer_number, description, staff_id, department_id, complaint_status_id, complaint_type_id, fromWhatsapp, customer_name } = complaintDetails
+    const { customer_number, description, staff_id, department_id, complaint_status_id, complaint_type_id, fromWhatsapp, customer_name, created_by } = complaintDetails
         complaint = await Complaint.create({
           customerNumber: customer_number,
           description,
@@ -28,7 +27,8 @@ export const createComplaint = async (complaintDetails: any) => {
           complaintStatusId: complaint_status_id,
           complaintTypeId: complaint_type_id,
           fromWhatsapp: fromWhatsapp == "true" ? true : false,
-          customerName: customer_name
+          customerName: customer_name,
+          createdBy: created_by
         })
 
     return complaint

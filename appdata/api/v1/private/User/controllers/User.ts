@@ -58,11 +58,25 @@ export const getAllComplaintStatus: RequestHandler = async (req, res, next) => {
     }
    };
 
+  export const getAllUsers: RequestHandler = async (req, res, next) => {
+    try {
+      const users = await userService.getAllUsers()
+      if (!users) {
+        return serverErrorResponse(res, responses.ORDER_CREATED);
+      }
+  
+      return successResponse(res, {users});
+    } catch (error) {
+      next(error)
+    }
+  }
+
   const userController = {
     getAllComplaintStatus,
     getUsersByDepartment,
     getUserTypes,
-    getComplaintTypes
+    getComplaintTypes,
+    getAllUsers
 }
 
 export default userController

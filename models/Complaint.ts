@@ -66,6 +66,11 @@ const Complaint = sequelize.define(
       allowNull: true,
       type: DataTypes.STRING
     },
+    createdBy: {
+      field: "created_by",
+      allowNull: false,
+      type: DataTypes.STRING
+    },
     createdAt: {
       field: "created_at",
       allowNull: false,
@@ -86,6 +91,6 @@ const Complaint = sequelize.define(
   }
 )
 
-Complaint.sync({alter: true})
+// Complaint.sync({alter: true})
 
 export default Complaint
