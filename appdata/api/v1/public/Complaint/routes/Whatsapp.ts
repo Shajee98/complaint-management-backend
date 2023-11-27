@@ -27,8 +27,13 @@ whatsappRouter.post(
 )
 
 whatsappRouter.post(
-  "/message-status",
+  "/set/message-status",
   whatsappController.MessageStatus
+)
+
+whatsappRouter.get(
+  "/message-status/get/all",
+  whatsappController.getAllMessagesStatus
 )
 
 export default whatsappRouter

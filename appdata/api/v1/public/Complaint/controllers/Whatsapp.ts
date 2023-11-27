@@ -97,8 +97,23 @@ const WhatsappMessage: RequestHandler = async (req, res, next) => {
 
 const MessageStatus: RequestHandler = async (req, res, next) => {
   try {
-    const { customer_number, message_status, service_end_date } = req.body
-    const statuses = await whatsappService.whatsappMessageStatus({customer_number, message_status, service_end_date})
+    const { newRecords } = req.body
+    const statuses = await whatsappService.whatsappMessageStatus(newRecords)
+
+    if (!statuses)
+    {
+      return serverErrorResponse(res, responses.USER_REGISTRATION_FAILURE)
+    }
+
+    return res.send(genericResponseByData(statuses, { success: responses.ADMIN_REGISTRATION_SUCCESS }));
+} catch (error) {
+next(error)
+}
+}
+
+const getAllMessagesStatus: RequestHandler = async (req, res, next) => {
+  try {
+    const statuses = await whatsappService.getAllMessagesStatus()
 
     if (!statuses)
     {
@@ -117,7 +132,8 @@ const whatsappController = {
     YesOrNoCount,
     WhatsappMessage,
     SetWhatsappMessageFormat,
-    MessageStatus
+    MessageStatus,
+    getAllMessagesStatus
 } 
 
 export default whatsappController
