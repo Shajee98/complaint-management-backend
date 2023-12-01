@@ -14,6 +14,10 @@ const MessageStatus = sequelize.define(
       allowNull: false,
       type: DataTypes.STRING
     },
+    customerName: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
     messageStatus: {
       allowNull: false,
       type: DataTypes.INTEGER

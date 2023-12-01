@@ -157,10 +157,13 @@ export const updatePassword = async (newPassword: string, userId: number) => {
 export const getAllUsers = async () => {
   try {
     const statuses = await User.findAll({
-      include: {
+      include: [{
         model: Department,
         as: 'department'
-      }
+      }, {
+        model: UserType,
+        as: "user_type"
+      }]
     });
     
     return statuses;

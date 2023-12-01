@@ -89,29 +89,96 @@ export const getAllComplaints = async (department_id: number | null, complaint_t
         console.log("department_id ===>", typeof department_id)
         if (department_id == 4)
         {
-          complaints = await Complaint.findAndCountAll({
-            where: {
-              complaintTypeId: complaint_type_id,
-              complaintStatusId: complaint_status_id
-            },
-            include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
-            order: [["id", "desc"]],
-          })          
+          if (complaint_status_id == 1)
+          {
+            complaints = await Complaint.findAndCountAll({
+              where: {
+                complaintTypeId: complaint_type_id,
+              },
+              include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+              order: [["id", "desc"]],
+            })   
+          }
+          else {
+            complaints = await Complaint.findAndCountAll({
+              where: {
+                // complaintTypeId: complaint_type_id == null ? {[Op.in]: [1,2]} : complaint_type_id,
+                complaintTypeId: complaint_type_id,
+                complaintStatusId: complaint_status_id
+              },
+              include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+              order: [["id", "desc"]],
+            })
+          }
         }
         else if (department_id == 0)
         {
-          complaints = await Complaint.findAndCountAll({
-            where: {
-              departmentId: null,
-              complaintTypeId: complaint_type_id,
-              complaintStatusId: complaint_status_id
-            },
-            include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
-            order: [["id", "desc"]],
-          })   
+          if (complaint_status_id == 1)
+          {
+            complaints = await Complaint.findAndCountAll({
+              where: {
+                departmentId: null,
+                // complaintTypeId: complaint_type_id == null ? {[Op.in]: [1,2]} : complaint_type_id,
+                complaintTypeId: complaint_type_id,
+              },
+              include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+              order: [["id", "desc"]],
+            })
+          }
+          else {
+            complaints = await Complaint.findAndCountAll({
+              where: {
+                departmentId: null,
+                // complaintTypeId: complaint_type_id == null ? {[Op.in]: [1,2]} : complaint_type_id,
+                complaintTypeId: complaint_type_id,
+                complaintStatusId: complaint_status_id
+              },
+              include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+              order: [["id", "desc"]],
+            })
+          }
         }
         else 
         {
+          if (complaint_status_id == 1)
+          {
+            complaints = await Complaint.findAndCountAll({
+              where: {
+                departmentId: department_id,
+                complaintTypeId: complaint_type_id,
+              },
+              include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+              order: [["id", "desc"]],
+            })
+          }
+          else {
+            complaints = await Complaint.findAndCountAll({
+              where: {
+                departmentId: department_id,
+                // complaintTypeId: complaint_type_id == null ? {[Op.in]: [1,2]} : complaint_type_id,
+                complaintTypeId: complaint_type_id,
+                complaintStatusId: complaint_status_id
+              },
+              include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+              order: [["id", "desc"]],
+            })
+          }
+        }
+        break;
+      case 1:
+        console.log("Helllooooooooo // 1")
+        if (complaint_status_id == 1)
+        {
+          complaints = await Complaint.findAndCountAll({
+            where: {
+              departmentId: department_id,
+              complaintTypeId: complaint_type_id,
+            },
+            include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+            order: [["id", "desc"]],
+          })
+        }
+        else {
           complaints = await Complaint.findAndCountAll({
             where: {
               departmentId: department_id,
@@ -122,18 +189,6 @@ export const getAllComplaints = async (department_id: number | null, complaint_t
             order: [["id", "desc"]],
           })
         }
-        break;
-      case 1:
-        console.log("Helllooooooooo // 1")
-        complaints = await Complaint.findAndCountAll({
-          where: {
-            departmentId: department_id,
-            complaintTypeId: complaint_type_id,
-            complaintStatusId: complaint_status_id
-          },
-          include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
-          order: [["id", "desc"]],
-        })
         break;
       default:
         console.log("Default case");
@@ -340,16 +395,14 @@ export const addCommentToComplaint = async (complaint_id: number, user_id: numbe
 export const YesOrNo = async (whatsapp_response: number, customerNumber: string) => {
   try {
       let response
-      switch (whatsapp_response) {
-        case 1:
-          response = "Yes"
-          break;
-        case 2:
-          response = "No"
-          break;  
-        default:
-          break;
+      if (whatsapp_response == 1)
+      {
+        response = "Yes"
       }
+      else {
+        response = "No"
+      }
+
       const saved_response = await WhatsappResponse.create({
         response,
         customerNumber

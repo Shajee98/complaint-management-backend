@@ -20,6 +20,7 @@ export const whatsappMessageStatus = async (newRecords: any) => {
                 await MessageStatus.update({
                     customerNumber: prevRecord.dataValues.customerNumber,
                     serviceEndDate: prevRecord.dataValues.serviceEndDate,
+                    customerName: prevRecord.dataValues.customerName,
                     messageStatus: newRecord.messageStatus
                 }, {
                     where: {

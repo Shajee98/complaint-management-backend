@@ -11,7 +11,7 @@ User.belongsTo(UserType, {foreignKey: "user_type_id", as: "user_type"})
 
 User.belongsTo(Department, {foreignKey: "department_id", as: "department"})
 
-UserType.hasMany(User, { foreignKey: 'user_type_id' });
+UserType.hasMany(User, { foreignKey: 'user_type_id', as: "user_type" });
 
 Department.hasMany(Complaint, { foreignKey: 'department_id' });
 

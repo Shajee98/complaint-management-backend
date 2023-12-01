@@ -21,6 +21,8 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
       department_id: department_id
     });
 
+    console.log("createdUser " , createdUser)
+
     if (!createdUser) {
       serverErrorResponse(res, responses.USER_REGISTRATION_FAILURE);
     }

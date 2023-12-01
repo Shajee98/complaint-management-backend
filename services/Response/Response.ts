@@ -1,4 +1,3 @@
-import { Response } from "express";
 import responseCodes from "../../constants/ResponseCodes";
 import responses from "../../constants/Responses";
 

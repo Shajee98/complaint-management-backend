@@ -56,6 +56,14 @@ const User = sequelize.define(
         key: "id"
       }
     },
+    company_type_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "complaint_types",
+        key: "id"
+      }
+    },
     createdAt: {
       field: "created_at",
       allowNull: false,
@@ -80,6 +88,6 @@ const User = sequelize.define(
   }
 )
 
-// User.sync({alter: true})
+User.sync({alter: true})
 
 export default User
