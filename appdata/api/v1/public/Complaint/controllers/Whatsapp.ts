@@ -39,9 +39,9 @@ const YesOrNoCount: RequestHandler = async (req, res, next) => {
 const DescResponse: RequestHandler = async (req, res, next) => {
   try {
     console.log("req...", req.body);
-    const { customer_number, complaint_number, description, staff_id, department_id, complaint_status_id, complaint_type_id, fromWhatsapp, created_by } = req.body
+    const { customer_number, complaint_number, description, staff_id, department_id, complaint_status_id, complaint_type_id, fromWhatsapp, created_by, customer_name } = req.body
     console.log("customer_number ", customer_number, "complaint_number ", complaint_number, "description ", description, staff_id, "department_id ", department_id, "complaint_status_id", complaint_status_id)
-    const whatsapp_complaint = await complaintService.createComplaint({customer_number, complaint_number, description, staff_id, department_id, complaint_status_id, complaint_type_id, fromWhatsapp, created_by})
+    const whatsapp_complaint = await complaintService.createComplaint({customer_number, complaint_number, description, staff_id, department_id, complaint_status_id, complaint_type_id, fromWhatsapp, created_by, customer_name})
     if (!whatsapp_complaint) {
       return serverErrorResponse(res, responses.ORDER_NOT_CREATED);
     }

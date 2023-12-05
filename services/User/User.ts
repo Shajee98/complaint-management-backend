@@ -155,19 +155,37 @@ export const updatePassword = async (newPassword: string, userId: number) => {
   }
 }
 
-export const getAllUsers = async () => {
+export const getAllUsers = async (user_department_id: any) => {
   try {
-    const statuses = await User.findAll({
-      include: [{
-        model: Department,
-        as: 'department'
-      }, {
-        model: UserType,
-        as: "user_type"
-      }]
-    });
+    let users: any[] = [] 
+    if (user_department_id == "null")
+    {
+      users  = await User.findAll({
+        include: [{
+          model: Department,
+          as: 'department'
+        }, {
+          model: UserType,
+          as: "user_type"
+        }]
+      });
+    }
+    else {
+      users  = await User.findAll({
+        include: [{
+          model: Department,
+          as: 'department'
+        }, {
+          model: UserType,
+          as: "user_type"
+        }],
+        where: {
+          department_id: Number(user_department_id)
+        }
+      });
+    }
     
-    return statuses;
+    return users;
   } catch (error) {
     console.error(error);
   }

@@ -60,7 +60,9 @@ export const getAllComplaintStatus: RequestHandler = async (req, res, next) => {
 
   export const getAllUsers: RequestHandler = async (req, res, next) => {
     try {
-      const users = await userService.getAllUsers()
+      const { user_department_id } = req.query
+      console.log("user_department_id == > ", typeof user_department_id)
+      const users = await userService.getAllUsers(user_department_id)
       if (!users) {
         return serverErrorResponse(res, responses.ORDER_CREATED);
       }
