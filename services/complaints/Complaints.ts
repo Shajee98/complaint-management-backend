@@ -73,16 +73,31 @@ export const getAllComplaints = async (department_id: number | null, complaint_t
     switch (user_role_id) {
       case 3:
         console.log("Helllooooooooo // 3")
-        complaints = await Complaint.findAndCountAll({
-          where: {
-            // departmentId: department_id,
-            userId: user_id,
-            complaintTypeId: complaint_type_id,
-            complaintStatusId: complaint_status_id
-          },
-          include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
-          order: [["id", "desc"]],
-        })
+        if (complaint_status_id == 1)
+        {
+          complaints = await Complaint.findAndCountAll({
+            where: {
+              complaintTypeId: complaint_type_id,
+              departmentId: department_id,
+              userId: user_id,
+            },
+            include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+            order: [["id", "desc"]],
+          })   
+        }
+        else
+        {
+          complaints = await Complaint.findAndCountAll({
+            where: {
+              departmentId: department_id,
+              userId: user_id,
+              complaintTypeId: complaint_type_id,
+              complaintStatusId: complaint_status_id
+            },
+            include: [{ model: User, as: 'user', include: [{ model: UserRoleType, as: 'user_type' }] }, {model: ComplaintStatus, as: 'complaint_status'}, {model: Department, as: "department"}],
+            order: [["id", "desc"]],
+          })
+        }
         break;
       case 2:
         console.log("Helllooooooooo // 2")
