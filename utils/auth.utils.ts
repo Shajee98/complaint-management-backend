@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
 import {Request, Response, NextFunction, CookieOptions} from 'express'
 import { unauthorizedResponse } from "../services/Response/Response"
-import Responses from "../constants/Responses"
 
 export const verifyUserOnLogin = passport.authenticate("user-local", {
   session: false

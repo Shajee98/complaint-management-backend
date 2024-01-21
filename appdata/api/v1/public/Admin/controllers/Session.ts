@@ -1,8 +1,5 @@
-import responses from "../../../../../../constants/Responses";
-import { getJwt, COOKIE_OPTIONS, getRefreshToken } from "../../../../../../utils/auth.utils";
+import { getJwt, COOKIE_OPTIONS } from "../../../../../../utils/auth.utils";
 import { successResponse } from "../../../../../../services/Response/Response";
-
-import jwt from 'jsonwebtoken';
 import { RequestHandler } from "express";
 import { getUserById } from "../../../../../../services/User/User";
 
@@ -12,7 +9,7 @@ const login: RequestHandler = async (req, res, next) => {
     const user = await getUserById(req.user?.id)
     // Remove users password from memory
     req.user!.password = undefined
-    console.log("req.user after logging in => ", req.user)
+    console.log("req.admin after logging in => ", req.user)
     const jwtToken = getJwt({
       id: req.user!.id,
       user_name: req.user!.user_name,

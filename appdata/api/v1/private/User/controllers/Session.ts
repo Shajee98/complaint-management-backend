@@ -1,16 +1,14 @@
 import responses from "../../../../../../constants/Responses"
-import jwt from "jsonwebtoken"
-import { getJwt, COOKIE_OPTIONS } from "../../../../../..//utils/auth.utils"
-import { serverErrorResponse, successResponse, badRequestResponse, unauthorizedResponse } from "../../../../../../services/Response/Response"
+import { successResponse } from "../../../../../../services/Response/Response"
 import { NextFunction, Request, Response } from "express"
 
-export const logout = async (req: Request, res: Response, next: NextFunction) => {
+export const logout = (req: Request, res: Response, next: NextFunction) => {
     try {
       const { token } = req.signedCookies
       console.log("refreshToken => " + token)
   
-      res.clearCookie("token", COOKIE_OPTIONS)
-      return
+      res.clearCookie("token")
+      return successResponse(res, {message: responses.LOG_OUT})
     } catch (error) {
       next(error)
     }

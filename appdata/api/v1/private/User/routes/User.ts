@@ -29,4 +29,9 @@ userRouter.get(
   userController.getAllUsers
 )
 
+userRouter.delete(
+  "/delete",
+  userController.deleteUser
+)
+
 export default userRouter

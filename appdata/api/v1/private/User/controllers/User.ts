@@ -73,12 +73,28 @@ export const getAllComplaintStatus: RequestHandler = async (req, res, next) => {
     }
   }
 
+  export const deleteUser: RequestHandler = async (req, res, next) => {
+    try {
+      const { id } = req.query
+      console.log("user_department_id == > ", typeof id)
+      const users = await userService.deleteUser(id)
+      if (!users) {
+        return serverErrorResponse(res, responses.ORDER_CREATED);
+      }
+  
+      return successResponse(res, {users});
+    } catch (error) {
+      next(error)
+    }
+  }
+
   const userController = {
     getAllComplaintStatus,
     getUsersByDepartment,
     getUserTypes,
     getComplaintTypes,
-    getAllUsers
+    getAllUsers,
+    deleteUser
 }
 
 export default userController

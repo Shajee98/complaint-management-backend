@@ -1,11 +1,5 @@
-import sequelize from "../../config/db.config"
-import responses from "../../constants/Responses"
-import Attachment from "../../models/Attahcment";
-import Comment from "../../models/Comments";
-import Complaint from "../../models/Complaint"
 import Department from "../../models/Department";
 import User from '../../models/User'
-import UserRoleType from "../../models/UserType";
 
 
 export const getAllDepartments = async () => {

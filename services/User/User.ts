@@ -6,7 +6,7 @@ import UserType from "../../models/UserType"
 
 // Username can either be user_name or user_email attribute of the DB
 
-export const register = async (userInfo: { first_name: string, last_name: string, user_name: string, password: string, user_type_id: number, department_id: number, company_type_id: number}) => {
+export const register = async (userInfo: { first_name: string, last_name: string, user_name: string, password: string, user_type_id: number, department_id: number, company_type_id: number, email: string}) => {
     try {
       const admin = await User.create({
         user_name: userInfo.user_name.toLowerCase(),
@@ -15,7 +15,8 @@ export const register = async (userInfo: { first_name: string, last_name: string
         password: userInfo.password,
         user_type_id: userInfo.user_type_id,
         department_id: userInfo.department_id,
-        company_type_id: userInfo.company_type_id
+        company_type_id: userInfo.company_type_id,
+        email: userInfo.email
       })
       if (!admin) {
         return
@@ -191,6 +192,23 @@ export const getAllUsers = async (user_department_id: any) => {
   }
 }
 
+export const deleteUser =async (user_id: any) => {
+  try {
+    const user = await User.destroy({
+      where: {
+        id: user_id
+      }
+    })
+    if (user == 1)
+    {
+      return {deleted: true}
+    }
+    return {deleted: false}
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export default {
   register,
   getUserByUserName,
@@ -200,5 +218,6 @@ export default {
   getAllComplaintStatus,
   getUserTypes,
   getComplaintTypes,
-  getAllUsers
+  getAllUsers,
+  deleteUser
 }

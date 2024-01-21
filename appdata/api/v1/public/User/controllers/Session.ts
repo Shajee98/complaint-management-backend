@@ -1,8 +1,5 @@
-import responses from "../../../../../../constants/Responses";
-import { getJwt, COOKIE_OPTIONS, getRefreshToken } from "../../../../../../utils/auth.utils";
+import { getJwt, COOKIE_OPTIONS } from "../../../../../../utils/auth.utils";
 import { successResponse } from "../../../../../../services/Response/Response";
-
-import jwt from 'jsonwebtoken';
 import { RequestHandler } from "express";
 import { getUserById } from "../../../../../../services/User/User";
 

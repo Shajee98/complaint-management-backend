@@ -34,7 +34,11 @@ const User = sequelize.define(
     user_name: {
       allowNull: false,
       type: DataTypes.STRING,
-      unique: true
+      // unique: true
+    },
+    email: {
+      allowNull: false,
+      type: DataTypes.STRING,
     },
     password: {
       allowNull: false,
@@ -84,7 +88,8 @@ const User = sequelize.define(
     hooks: {
       beforeCreate: hashPassword,
       beforeUpdate: hashPassword
-    }
+    },
+    // indexes:[{unique:true, fields: ['email']}]
   }
 )
 

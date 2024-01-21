@@ -1,18 +1,15 @@
 import passport from "passport"
-import {ExtractJwt, Strategy, VerifiedCallback, StrategyOptions} from "passport-jwt"
+import {Strategy, VerifiedCallback, StrategyOptions} from "passport-jwt"
 import userService from "../services/User/User"
 import { Request } from "express"
 
 const cookieExtractor = (req: Request) => {
-  let jwt = null 
 
   if (req && req.signedCookies) {
-      jwt = req.signedCookies['token']
+    console.log("jwt =======> ", req.signedCookies['token'])
+      return req.signedCookies['token']
   }
 
-  console.log("jwt =======> ", jwt)
-
-  return jwt
 }
 
 const options: StrategyOptions = {
@@ -24,9 +21,9 @@ const options: StrategyOptions = {
 const deserializeUser = async (jwt_payload: any, done: VerifiedCallback) => {
   console.log("jwt_payload =>" + JSON.stringify(jwt_payload))
   try {
-    // if (!(Date.now() >= Number(jwt_payload.exp) * 1000))
+    // if (jwt_payload.exp < Date.now() / 1000)
     // {
-    //   // console.log("exp => ", exp)
+    //   console.log("exp => ", new Date(jwt_payload.exp * 1000))
     //   return done("token expired", false)
     // }
     let user = await userService.getUserById(jwt_payload.id)

@@ -106,13 +106,19 @@ export const updateComplaint: RequestHandler = async (req, res, next) => {
 export const getAllComplaints: RequestHandler = async (req, res, next) => {
   try {
     const { department_id, complaint_type_id, complaint_status_id } = req.query
+    console.log("department_id ==> ", department_id, " complaint_type_id ===> ", complaint_type_id, " complaint_status_id ===> ", complaint_status_id)
     const user = req.user
     const complaints = await complaintService.getAllComplaints(Number(department_id), Number(complaint_type_id), Number(complaint_status_id), user)
+    console.log("complaints ==> ", complaints)
     if (!complaints) {
       return serverErrorResponse(res, responses.ORDER_CREATED);
     }
-
+    else if (complaints.count == 0)
+    {
+      return successResponse(res, {complaints});
+    }
     return successResponse(res, {complaints});
+
   } catch (error) {
     next(error)
   }
@@ -204,9 +210,9 @@ export const getComplaintById: RequestHandler = async (req, res, next) => {
 
 const getComplaintsByMonth: RequestHandler = async (req, res, next) => {
   try {
-    const { status_id } = req.query;
+    const { status_id, complaint_type_id } = req.query;
     const id = req.user?.id
-    const complaints = await complaintService.getComplaintsByMonths(Number(id), Number(status_id));
+    const complaints = await complaintService.getComplaintsByMonths(Number(id), Number(status_id), Number(complaint_type_id));
     const responseData = { ...complaints };
     successResponse(res, responseData);
     return;

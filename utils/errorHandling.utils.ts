@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from "express";
+import { serverErrorResponse } from "../services/Response/Response";
 
-import {
-  badRequestResponse,
-  serverErrorResponse,
-} from "../services/Response/Response"
-
-export const handleErrors = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const handleErrors = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   console.error("Globally handled error ->", { err });
 
   if (err?.name?.includes("Sequelize")) {
@@ -24,4 +25,4 @@ export const handleErrors = (err: any, req: Request, res: Response, next: NextFu
   return;
 };
 
-export default handleErrors
+export default handleErrors;

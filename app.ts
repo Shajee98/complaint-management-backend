@@ -4,7 +4,6 @@ import "./utils/auth.utils"
 import "./models/Relations"
 
 import cors, { CorsOptions } from "cors"
-import createError from "http-errors"
 import express from "express"
 import path from "path"
 import dotenv from 'dotenv'

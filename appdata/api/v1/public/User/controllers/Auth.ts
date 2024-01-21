@@ -10,7 +10,7 @@ import { NextFunction, Request, Response } from "express";
 // Gets required info from request and calls service to create new user record
 const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { first_name, last_name, password, user_name, user_type_id, department_id, company_type_id } = req.body;
+    const { first_name, last_name, password, user_name, user_type_id, department_id, company_type_id, email } = req.body;
     console.log("department_id ==> ", department_id)
     const createdUser = await authService.register({
       first_name: first_name,
@@ -19,7 +19,8 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
       password: password,
       user_type_id: user_type_id,
       department_id: department_id,
-      company_type_id: company_type_id
+      company_type_id: company_type_id,
+      email: email
     });
 
     console.log("createdUser " , createdUser)

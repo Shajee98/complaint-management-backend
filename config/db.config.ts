@@ -3,7 +3,7 @@ import {Sequelize} from "sequelize";
 const sequelize = new Sequelize(
   "complaints",
   "root",
-  "mysql",
+  "root1234",
   {
     host: "localhost",
     dialect: 'mysql', 

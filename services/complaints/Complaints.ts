@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import { Model, Op } from "sequelize";
 import sequelize from "../../config/db.config"
 import Attachment from "../../models/Attahcment";
 import Comment from "../../models/Comments";
@@ -66,7 +66,7 @@ export const updateComplaint = async (id: number, complaintDetails: any) => {
 
 export const getAllComplaints = async (department_id: number | null, complaint_type_id: number, complaint_status_id: number, user?: any) => {
   try {
-    let complaints
+    let complaints:  {rows: Model<any, any>[]; count: number; } = {rows: [], count: 0}
     const user_role_id = user?.user_type_id
     const user_id = user?.id
     console.log("user_role_id ==> ", user_role_id)
@@ -266,7 +266,7 @@ export const getComplaintById = async (id: number) => {
   }
 };
 
-const getComplaintsByMonths = async (userId: number, status_id: number) => {
+const getComplaintsByMonths = async (userId: number, status_id: number, complaint_type_id: number) => {
   try {
     console.log('Getting Complaints By Month')
     const complaints = await Complaint.findAll({
@@ -282,6 +282,9 @@ const getComplaintsByMonths = async (userId: number, status_id: number) => {
           'count'
         ],
       ],
+      where: {
+        complaintTypeId: complaint_type_id
+      },
       // order: [[sequelize.fn('DATE', sequelize.col('created_at')), 'DESC']],
       //order: [[sequelize.fn('DATE', sequelize.col('created_at')), 'ASC']],
 
