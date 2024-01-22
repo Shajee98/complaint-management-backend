@@ -14,6 +14,15 @@ const WhatsappResponse = sequelize.define(
       allowNull: false,
       type: DataTypes.STRING
     },
+    complaintTypeId: {
+      field: "complaint_type_id",
+      allowNull: false,
+      type: DataTypes.INTEGER,
+      references: {
+        model: "complaint_types",
+        key: 'id'
+      }
+    },
     customerNumber: {
         field: "customer_number",
         type: DataTypes.STRING,

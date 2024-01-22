@@ -410,7 +410,7 @@ export const addCommentToComplaint = async (complaint_id: number, user_id: numbe
   }
 };
 
-export const YesOrNo = async (whatsapp_response: number, customerNumber: string) => {
+export const YesOrNo = async (whatsapp_response: number, customerNumber: string, complaint_type_id: any) => {
   try {
       let response
       if (whatsapp_response == 1)
@@ -423,7 +423,8 @@ export const YesOrNo = async (whatsapp_response: number, customerNumber: string)
 
       const saved_response = await WhatsappResponse.create({
         response,
-        customerNumber
+        customerNumber,
+        complaintTypeId: complaint_type_id
       });
 
     return saved_response;
@@ -432,7 +433,7 @@ export const YesOrNo = async (whatsapp_response: number, customerNumber: string)
   }
 };
 
-const YesOrNoCount = async () => {
+const YesOrNoCount = async (complaint_type_id: any) => {
   try {
     const responses = await WhatsappResponse.findAll({
       attributes: [
@@ -444,7 +445,10 @@ const YesOrNoCount = async () => {
           sequelize.literal(`SUM(CASE WHEN response = 'No' THEN 1 ELSE 0 END)`),
           'negetive'
         ],
-      ]
+      ],
+      where: {
+        complaintTypeId: complaint_type_id
+      }
     });
 
     return {responses};

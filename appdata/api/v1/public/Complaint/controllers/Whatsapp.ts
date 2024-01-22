@@ -7,8 +7,8 @@ import whatsappService from "../../../../../../services/whatsapp/Whatsapp";
 
 const YesOrNo: RequestHandler = async (req, res, next) => {
     try {
-        const { response, customerNumber } = req.body
-            const response_saved = await complaintService.YesOrNo(response, customerNumber)
+        const { response, customerNumber, company_type_id } = req.body
+            const response_saved = await complaintService.YesOrNo(response, customerNumber, company_type_id)
   
             if (!response_saved)
             {
@@ -23,7 +23,8 @@ const YesOrNo: RequestHandler = async (req, res, next) => {
 
 const YesOrNoCount: RequestHandler = async (req, res, next) => {
     try {
-            const response_counts = await complaintService.YesOrNoCount()
+            const { complaint_type_id } = req.query
+            const response_counts = await complaintService.YesOrNoCount(Number(complaint_type_id))
   
             if (!response_counts)
             {
